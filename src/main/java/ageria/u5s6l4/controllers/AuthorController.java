@@ -4,6 +4,7 @@ package ageria.u5s6l4.controllers;
 import ageria.u5s6l4.DTO.NewAuthorDTO;
 import ageria.u5s6l4.entities.Author;
 import ageria.u5s6l4.exceptions.BadRequestException;
+import ageria.u5s6l4.exceptions.ValidationException;
 import ageria.u5s6l4.services.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,7 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -49,7 +52,17 @@ public class AuthorController {
         }
     }
 
-
+    @PostMapping("/avatar/{authorId}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void uploadAvatar(@RequestParam("avatar")MultipartFile file, @PathVariable UUID authorId ) {
+        // "avatar" deve corrispondere ESATTAMENTE come il campo del FormData che ci invia il Frontend
+        // Se non corrisponde non troverò il file
+        try{
+        this.authorService.uploadImage(file, authorId);}
+        catch(IOException ex){
+            throw new ValidationException(ex.getMessage());
+        }
+    }
 
     @PutMapping("/{authorId}")
     @ResponseStatus(HttpStatus.OK)
