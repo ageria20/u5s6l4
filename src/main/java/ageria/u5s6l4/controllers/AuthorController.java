@@ -1,14 +1,19 @@
 package ageria.u5s6l4.controllers;
 
 
-import ageria.u5s6l3.entities.Author;
-import ageria.u5s6l3.services.AuthorService;
+import ageria.u5s6l4.DTO.NewAuthorDTO;
+import ageria.u5s6l4.entities.Author;
+import ageria.u5s6l4.exceptions.BadRequestException;
+import ageria.u5s6l4.services.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/author")
@@ -33,9 +38,15 @@ public class AuthorController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Author createAuthor(@RequestBody Author body){
-        authorService.saveAuthor(body);
-        return body;
+    public Author createAuthor(@RequestBody @Validated NewAuthorDTO body, BindingResult bindingResult){
+
+        if(bindingResult.hasErrors()){
+            String message = bindingResult.getAllErrors().stream().map(error -> error.getDefaultMessage()).collect(Collectors.joining());
+            throw new BadRequestException(message);
+        }
+        else {
+            return this.authorService.saveAuthor(body);
+        }
     }
 
 

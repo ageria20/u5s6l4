@@ -1,7 +1,7 @@
 package ageria.u5s6l4.repositories;
 
 
-import ageria.u5s6l3.entities.Author;
+import ageria.u5s6l4.entities.Author;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

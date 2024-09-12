@@ -1,10 +1,10 @@
 package ageria.u5s6l4.services;
 
-import ageria.u5s6l3.entities.Author;
-import ageria.u5s6l3.entities.BlogPost;
-import ageria.u5s6l3.entities.BlogPostPayload;
-import ageria.u5s6l3.exceptions.NotFoundExceptionId;
-import ageria.u5s6l3.repositories.BlogPostRepository;
+import ageria.u5s6l4.entities.Author;
+import ageria.u5s6l4.entities.BlogPost;
+import ageria.u5s6l4.DTO.NewBlogPostDTO;
+import ageria.u5s6l4.exceptions.NotFoundExceptionId;
+import ageria.u5s6l4.repositories.BlogPostRepository;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -39,7 +39,7 @@ public class BlogPostService {
         return this.blogPostRepository.findById(id).orElseThrow(() -> new NotFoundExceptionId(id));
     }
 
-    public BlogPost saveBlogPost(BlogPostPayload body){
+    public BlogPost saveBlogPost(NewBlogPostDTO body){
 //        System.out.println("AAAAAAAAAAAAAAAAAA");
 //        System.out.println(this.authorService.findAuthorById(body.getAuthorId()));
         Author authorFromDb = this.authorService.findAuthorById(body.getAuthorId());

@@ -1,4 +1,4 @@
-package ageria.u5s6l4.entities;
+package ageria.u5s6l4.DTO;
 
 
 import lombok.Data;
@@ -7,7 +7,7 @@ import java.util.UUID;
 
 
 @Data
-public class BlogPostPayload {
+public class NewBlogPostDTO {
 
     private String category;
     private String title;

@@ -29,4 +29,11 @@ public class Author {
     private String avatar;
 
 
+    public Author(String name, String surname, String email, String avatar, LocalDate birthDate) {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.avatar = avatar;
+        this.birthDate = birthDate;
+    }
 }

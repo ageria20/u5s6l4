@@ -1,8 +1,8 @@
 package ageria.u5s6l4.controllers;
 
-import ageria.u5s6l3.entities.BlogPost;
-import ageria.u5s6l3.entities.BlogPostPayload;
-import ageria.u5s6l3.services.BlogPostService;
+import ageria.u5s6l4.entities.BlogPost;
+import ageria.u5s6l4.DTO.NewBlogPostDTO;
+import ageria.u5s6l4.services.BlogPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -33,7 +33,7 @@ public class BlogController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public BlogPost createBloPost(@RequestBody BlogPostPayload body){
+    public BlogPost createBloPost(@RequestBody NewBlogPostDTO body){
        return blogPostService.saveBlogPost(body);
 
     }
