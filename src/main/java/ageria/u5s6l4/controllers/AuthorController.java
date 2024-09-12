@@ -54,15 +54,12 @@ public class AuthorController {
 
     @PostMapping("/avatar/{authorId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public void uploadAvatar(@RequestParam("avatar")MultipartFile file, @PathVariable UUID authorId ) {
+    public void uploadAvatar(@RequestParam("avatar")MultipartFile file, @PathVariable UUID authorId ) throws IOException {
         // "avatar" deve corrispondere ESATTAMENTE come il campo del FormData che ci invia il Frontend
         // Se non corrisponde non troverò il file
-        try{
-        this.authorService.uploadImage(file, authorId);}
-        catch(IOException ex){
-            throw new ValidationException(ex.getMessage());
-        }
+        this.authorService.uploadImage(file, authorId);
     }
+
 
     @PutMapping("/{authorId}")
     @ResponseStatus(HttpStatus.OK)

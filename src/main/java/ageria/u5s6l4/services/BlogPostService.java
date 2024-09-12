@@ -5,6 +5,8 @@ import ageria.u5s6l4.entities.BlogPost;
 import ageria.u5s6l4.DTO.NewBlogPostDTO;
 import ageria.u5s6l4.exceptions.NotFoundExceptionId;
 import ageria.u5s6l4.repositories.BlogPostRepository;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,7 +14,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,6 +29,9 @@ public class BlogPostService {
 
     @Autowired
     AuthorService authorService;
+
+    @Autowired
+    Cloudinary cloudinaryUploader;
 
     public Page<BlogPost> getAllPosts(int pages, int elements, String sortBy){
         Pageable pageable = PageRequest.of(pages, elements, Sort.by(sortBy));
@@ -72,10 +79,16 @@ public class BlogPostService {
         return found;
     }
 
+    public void uploadImage(MultipartFile file, UUID id) throws IOException {
+        BlogPost bp = this.findPostById(id);
+        String url = (String) cloudinaryUploader.uploader().upload(file.getBytes(), ObjectUtils.emptyMap()).get("url");
+        bp.setCover(url);
+        this.blogPostRepository.save(bp);
+    }
+
     public void findyByIdAndDelete(UUID blogPostId){
         BlogPost found = this.findPostById(blogPostId);
         this.blogPostRepository.delete(found);
-
 
     }
 

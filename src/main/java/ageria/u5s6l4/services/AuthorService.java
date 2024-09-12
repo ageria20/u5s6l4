@@ -53,10 +53,10 @@ public class AuthorService {
 
     public void uploadImage(MultipartFile avatar, UUID id) throws IOException {
 
-            String url = (String) cloudinaryUploader.uploader().upload(avatar.getName(), ObjectUtils.emptyMap()).get("url");
-            System.out.println("URL " + url);
             Author authorFromDB = findAuthorById(id);
+            String url = (String) cloudinaryUploader.uploader().upload(avatar.getBytes(), ObjectUtils.emptyMap()).get("url");
             authorFromDB.setAvatar(url);
+            System.out.println("URL " + url);
             this.authorRepository.save(authorFromDB);
 
     }

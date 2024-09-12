@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.UUID;
 
 @RestController
@@ -28,7 +30,7 @@ public class BlogController {
 
     @GetMapping("/{bloPostId}")
     public BlogPost findyById(@PathVariable UUID blogPostId){
-        return blogPostService.findPostById(blogPostId);
+        return this.blogPostService.findPostById(blogPostId);
     }
 
     @PostMapping
@@ -36,6 +38,13 @@ public class BlogController {
     public BlogPost createBloPost(@RequestBody NewBlogPostDTO body){
        return blogPostService.saveBlogPost(body);
 
+    }
+
+
+    @PostMapping("/cover/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void coverUpload(@RequestParam("cover") MultipartFile img, @PathVariable UUID id) throws IOException {
+        this.blogPostService.uploadImage(img, id);
     }
 
     @PutMapping("/{bloPostId}")
